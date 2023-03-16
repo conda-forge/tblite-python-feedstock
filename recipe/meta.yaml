@@ -1,32 +1,35 @@
 {% set name = "tblite-python" %}
-{% set version = "0.2.1" %}
+{% set version = "0.3.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}-source.tar.xz
-  sha256: 8c554bc0dec6770ffdd708bc7db21cb009f1ab602cc8d1a04be0d9107be33177
+  url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}.tar.gz
+  sha256: 48654770b2681a354d9f6a849c5bc903b94a18c39c25c61754807d8add1ad7a9
 
 build:
-  number: 2
-  skip: true  # [osx and py<38]
+  number: 0
   skip: true  # [win]
 
 
 requirements:
   build:
-    - {{ compiler('c') }}
-    - meson
-    - ninja
-    - python
-    - pkg-config
+    - {{ compiler('c') }}  # [unix]
+    - {{ compiler('m2w64_c') }}  # [win]
+    - cffi                                # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}  # [build_platform != target_platform]
+    - meson                               # [build_platform != target_platform]
+    - pkg-config                          # [build_platform != target_platform]
+    - python                              # [build_platform != target_platform]
   host:
     - cffi
+    - meson
+    - pkg-config
     - pip
     - python
-    - tblite {{ version }}
+    - tblite >={{ version }}
   run:
     - cffi
     - numpy
@@ -53,8 +56,8 @@ about:
   license: LGPL-3.0-or-later
   license_family: LGPL
   license_file:
-    - COPYING
-    - COPYING.LESSER
+    - subprojects/tblite/COPYING
+    - subprojects/tblite/COPYING.LESSER
   summary: Python API for the tblite project
 
 extra:
