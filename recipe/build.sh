@@ -2,10 +2,21 @@
 
 set -ex
 
-meson setup \
-  _build python \
-  ${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} \
-  --buildtype=release -Dpython_version=${PYTHON} \
-  || cat _build/meson-logs/meson-log.txt
+if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" != "1" ]]; then
+  MESON_ARGS=${MESON_ARGS:---prefix=${PREFIX} --libdir=lib}
+else
+  cat > pkgconfig.ini <<EOF
+[binaries]
+pkgconfig = '$BUILD_PREFIX/bin/pkg-config'
+EOF
+  MESON_ARGS="${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --cross-file pkgconfig.ini"
+fi
+
+meson setup _build \
+  ${MESON_ARGS} \
+  --buildtype=release \
+  --warnlevel=0 \
+  -Dpython_version=$PYTHON
+
 meson compile -C _build
 meson install -C _build --no-rebuild
