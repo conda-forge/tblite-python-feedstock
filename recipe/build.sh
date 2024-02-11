@@ -16,6 +16,8 @@ meson setup _build \
   ${MESON_ARGS} \
   --buildtype=release \
   --warnlevel=0 \
+  -Dpython.platlibdir=$SP_DIR \
+  -Dpython.purelibdir=$SP_DIR \
   -Dpython_version=$PYTHON
 
 meson compile -C _build
