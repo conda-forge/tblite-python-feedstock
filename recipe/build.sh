@@ -2,23 +2,29 @@
 
 set -ex
 
-if [[ "${CONDA_BUILD_CROSS_COMPILATION:-0}" != "1" ]]; then
-  MESON_ARGS=${MESON_ARGS:---prefix=${PREFIX} --libdir=lib}
-else
-  cat > pkgconfig.ini <<EOF
+cat > ${SRC_DIR}/pkgconfig.ini <<EOF
 [binaries]
 pkgconfig = '$BUILD_PREFIX/bin/pkg-config'
 EOF
-  MESON_ARGS="${MESON_ARGS:---prefix=${PREFIX} --libdir=lib} --cross-file pkgconfig.ini"
+
+build_args=(
+  "-Csetup-args=--warnlevel=0"
+  "-Csetup-args=--cross-file=${SRC_DIR}/pkgconfig.ini"
+  "-Csetup-args=-Dpython_version=${PREFIX}/bin/python3"
+)
+if [ -f ${BUILD_PREFIX}/meson_cross_file.txt ]; then
+  build_args=("${build_args[@]}" "-Csetup-args=--cross-file=${BUILD_PREFIX}/meson_cross_file.txt")
 fi
 
-meson setup _build \
-  ${MESON_ARGS} \
-  --buildtype=release \
-  --warnlevel=0 \
-  -Dpython.platlibdir=$SP_DIR \
-  -Dpython.purelibdir=$SP_DIR \
-  -Dpython_version=$PYTHON
+if [ -f mesonpep517.toml ]; then
+  mv mesonpep517.toml pyproject.toml
+fi
 
-meson compile -C _build
-meson install -C _build --no-rebuild
+${PYTHON} -m build \
+    "${build_args[@]}" \
+    --outdir . \
+    --no-isolation \
+    --wheel \
+    .
+
+${PYTHON} -m pip install *.whl --no-deps -vv
