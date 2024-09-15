@@ -8,6 +8,8 @@ package:
 source:
   url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}.tar.gz
   sha256: 48654770b2681a354d9f6a849c5bc903b94a18c39c25c61754807d8add1ad7a9
+  patches:
+    - purelib.patch
 
 build:
   number: 4

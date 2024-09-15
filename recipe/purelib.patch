@@ -1,0 +1,12 @@
+diff --git a/tblite/meson.build b/tblite/meson.build
+index c3cd0ea..85257fd 100644
+--- a/tblite/meson.build
++++ b/tblite/meson.build
+@@ -79,6 +79,7 @@ if install
+       'test_library.py',
+     ),
+     subdir: 'tblite',
++    pure: false,
+   )
+ endif
+ 
