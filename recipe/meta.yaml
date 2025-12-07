@@ -8,6 +8,10 @@ package:
 source:
   url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}.tar.gz
   sha256: 5dae9e7f559a2602c361acf3817c987501f5b13eaf2072b5f81bb8ae071fc7cb
+  patches:
+    # https://github.com/tblite/tblite/pull/304
+    # hopefully removed in v0.5.1
+    - loosen-thr.patch
 
 build:
   number: 0
