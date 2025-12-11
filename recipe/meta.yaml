@@ -57,7 +57,7 @@ test:
     - ase
   commands:
     - pip check
-    - pytest --pyargs tblite -vv
+    - pytest --pyargs tblite -vv  # [not win]
 
 about:
   home: https://pypi.org/project/tblite
