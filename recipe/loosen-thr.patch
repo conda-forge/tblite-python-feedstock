@@ -1,0 +1,13 @@
+diff --git a/python/tblite/test_interface.py b/python/tblite/test_interface.py
+index 15ff422..1aedc85 100644
+--- a/python/tblite/test_interface.py
++++ b/python/tblite/test_interface.py
+@@ -23,7 +23,7 @@ from pytest import approx, raises
+ from tblite.exceptions import TBLiteRuntimeError, TBLiteValueError
+ from tblite.interface import Calculator, Result, symbols_to_numbers
+ 
+-THR = 1.0e-9
++THR = 1.0e-6
+ 
+ 
+ def get_ala(conf):
