@@ -1,5 +1,5 @@
 {% set name = "tblite-python" %}
-{% set version = "0.7.0" %}
+{% set version = "0.8.0" %}
 
 package:
   name: {{ name|lower }}
@@ -7,10 +7,10 @@ package:
 
 source:
   url: https://github.com/tblite/tblite/releases/download/v{{ version }}/tblite-{{ version }}.tar.gz
-  sha256: c303bc45e0c48e46dad7f032d377432c8717e17b0eb8eedb6c42c5237c3856d2
+  sha256: cb6c90ccb14e9ad970bde7f57b49ab8558ac42996614bc703423f95abe2a7339
 
 build:
-  number: 2
+  number: 0
 
 
 requirements:
